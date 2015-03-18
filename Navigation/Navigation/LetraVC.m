@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Vinicius Miana. All rights reserved.
 //
 
-#import "LetraAViewController.h"
+#import "LetraVC.h"
 #import "Model.h"
 
-@implementation LetraAViewController{
+@implementation LetraVC{
     Model *md;
     UILabel *lblWord;
     UIBarButtonItem *btnNext;
@@ -40,7 +40,6 @@
     img.center = self.view.center;
     
     
-    
     lblWord = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.view.center.y + 150), self.view.bounds.size.width, 50)];
     [lblWord setTintColor:[UIColor blackColor]];
     [lblWord setTextAlignment:NSTextAlignmentCenter];
@@ -52,37 +51,45 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
     img.transform = CGAffineTransformMakeScale(0.2, 0.2);
     self.navigationItem.title = [NSString stringWithFormat:@"%c",[[md.words objectAtIndex:md.index] characterAtIndex:0]];
     [lblWord setText:[md.words objectAtIndex:md.index]];
     [img setImage:[UIImage imageNamed:@"heart"]];
-    if (md.index == ([md.words count]-1)) {
-        [btnNext setEnabled:NO];
-    }
-    else if (md.index == 0) {
-        [btnPrev setEnabled:NO];
-    }
+    btnNext.enabled = NO;
+    btnPrev.enabled = NO;
+    [lblWord setAlpha:0];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         img.transform = CGAffineTransformMakeScale(1, 1);
         img.transform = CGAffineTransformMakeRotation(M_PI);
         img.transform = CGAffineTransformMakeRotation(0);
+        [lblWord setAlpha:1];
+    } completion:^(BOOL finished) {
+        btnNext.enabled = YES;
+        btnPrev.enabled = YES;
     }];
 }
 
 -(void)next:(id)sender {
-    if (md.index < [md.words count]) {
-        LetraAViewController *nextPage = [[LetraAViewController alloc] initWithNibName:nil bundle:NULL];
-        [self.navigationController pushViewController:nextPage animated:YES];
-        md.index++;
+    LetraVC *nextPage = [[LetraVC alloc]init];
+//    NSMutableArray *views = [[NSMutableArray alloc] initWithObjects:[self.navigationController.viewControllers objectAtIndex:1], [self.navigationController.viewControllers objectAtIndex:2], nil, nil];
+//    [views replaceObjectAtIndex:2 withObject:nextPage];
+    [self.navigationController pushViewController:nextPage animated:YES];
+    if (md.index == ([md.words count]-1)) {
+        md.index = 0;
     }
+    else { md.index++; }
 }
 
 -(void)prev:(id)sender {
-    if (md.index > 0) {
+    if (md.index == 0) {
+        LetraVC *prevPage = [[LetraVC alloc] initWithNibName:nil bundle:NULL];
+        [self.navigationController pushViewController:prevPage animated:YES];
+        md.index = (int)([md.words count]-1);
+    }
+    else{
         [self.navigationController popViewControllerAnimated:YES];
         md.index--;
     }

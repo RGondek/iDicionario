@@ -7,17 +7,19 @@
 //
 
 #import "MackenzieAppDelegate.h"
-#import "LetraAViewController.h"
+#import "LetraVC.h"
+#import "DictionaryTBC.h"
 
 @implementation MackenzieAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    LetraAViewController *viewController = [[LetraAViewController alloc] initWithNibName:nil bundle:nil];
+    LetraVC *viewController = [[LetraVC alloc] initWithNibName:nil bundle:nil];
+    DictionaryTBC *dicTBC = [[DictionaryTBC alloc] init];
     
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = self.navigationController;
+    self.window.rootViewController = dicTBC;
 
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

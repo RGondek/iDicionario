@@ -19,8 +19,10 @@
 		27156F6818B76AF50053A99C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27156F5018B76AF50053A99C /* UIKit.framework */; };
 		27156F7018B76AF50053A99C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27156F6E18B76AF50053A99C /* InfoPlist.strings */; };
 		27156F7218B76AF50053A99C /* NavigationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 27156F7118B76AF50053A99C /* NavigationTests.m */; };
-		27156F7D18BA89430053A99C /* LetraAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27156F7C18BA89430053A99C /* LetraAViewController.m */; };
+		27156F7D18BA89430053A99C /* LetraVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27156F7C18BA89430053A99C /* LetraVC.m */; };
+		D53F8AED1AB990AE0077FE0E /* DictionaryTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = D53F8AEC1AB990AE0077FE0E /* DictionaryTBC.m */; };
 		D58FEF1C1AB7596E00A148D3 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = D58FEF1B1AB7596E00A148D3 /* Model.m */; };
+		D5BFF5EC1AB9B9F100E67A55 /* LetrasTbVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BFF5EB1AB9B9F100E67A55 /* LetrasTbVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,10 +52,14 @@
 		27156F6D18B76AF50053A99C /* NavigationTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NavigationTests-Info.plist"; sourceTree = "<group>"; };
 		27156F6F18B76AF50053A99C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		27156F7118B76AF50053A99C /* NavigationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavigationTests.m; sourceTree = "<group>"; };
-		27156F7B18BA89430053A99C /* LetraAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LetraAViewController.h; sourceTree = "<group>"; };
-		27156F7C18BA89430053A99C /* LetraAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LetraAViewController.m; sourceTree = "<group>"; };
+		27156F7B18BA89430053A99C /* LetraVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LetraVC.h; sourceTree = "<group>"; };
+		27156F7C18BA89430053A99C /* LetraVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LetraVC.m; sourceTree = "<group>"; };
+		D53F8AEB1AB990AE0077FE0E /* DictionaryTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryTBC.h; sourceTree = "<group>"; };
+		D53F8AEC1AB990AE0077FE0E /* DictionaryTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DictionaryTBC.m; sourceTree = "<group>"; };
 		D58FEF1A1AB7596E00A148D3 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		D58FEF1B1AB7596E00A148D3 /* Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
+		D5BFF5EA1AB9B9F100E67A55 /* LetrasTbVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LetrasTbVC.h; sourceTree = "<group>"; };
+		D5BFF5EB1AB9B9F100E67A55 /* LetrasTbVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LetrasTbVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,12 +121,16 @@
 			children = (
 				27156F5B18B76AF50053A99C /* MackenzieAppDelegate.h */,
 				27156F5C18B76AF50053A99C /* MackenzieAppDelegate.m */,
-				27156F5E18B76AF50053A99C /* Images.xcassets */,
-				27156F5318B76AF50053A99C /* Supporting Files */,
-				27156F7B18BA89430053A99C /* LetraAViewController.h */,
-				27156F7C18BA89430053A99C /* LetraAViewController.m */,
+				27156F7B18BA89430053A99C /* LetraVC.h */,
+				27156F7C18BA89430053A99C /* LetraVC.m */,
+				D53F8AEB1AB990AE0077FE0E /* DictionaryTBC.h */,
+				D53F8AEC1AB990AE0077FE0E /* DictionaryTBC.m */,
+				D5BFF5EA1AB9B9F100E67A55 /* LetrasTbVC.h */,
+				D5BFF5EB1AB9B9F100E67A55 /* LetrasTbVC.m */,
 				D58FEF1A1AB7596E00A148D3 /* Model.h */,
 				D58FEF1B1AB7596E00A148D3 /* Model.m */,
+				27156F5E18B76AF50053A99C /* Images.xcassets */,
+				27156F5318B76AF50053A99C /* Supporting Files */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -199,7 +209,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = Mackenzie;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = "Vinicius Miana";
 				TargetAttributes = {
 					27156F6318B76AF50053A99C = {
@@ -251,9 +261,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				27156F5D18B76AF50053A99C /* MackenzieAppDelegate.m in Sources */,
-				27156F7D18BA89430053A99C /* LetraAViewController.m in Sources */,
+				D5BFF5EC1AB9B9F100E67A55 /* LetrasTbVC.m in Sources */,
+				27156F7D18BA89430053A99C /* LetraVC.m in Sources */,
 				27156F5918B76AF50053A99C /* main.m in Sources */,
 				D58FEF1C1AB7596E00A148D3 /* Model.m in Sources */,
+				D53F8AED1AB990AE0077FE0E /* DictionaryTBC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,7 +311,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -338,7 +349,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -396,7 +406,6 @@
 		27156F7918B76AF50053A99C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Navigation.app/Navigation";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -419,7 +428,6 @@
 		27156F7A18B76AF50053A99C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Navigation.app/Navigation";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
