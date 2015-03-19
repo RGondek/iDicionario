@@ -10,7 +10,7 @@
 
 @implementation Model
 
-@synthesize imgs, words, index;
+@synthesize words, index;
 
 static Model *_instance = nil;
 
@@ -25,8 +25,7 @@ static Model *_instance = nil;
     self = [super init];
     if (self) {
         index = 0;
-        words = @[@"Ametista", @"Berilo", @"Citrino", @"Diamante", @"Esmeralda", @"Fluorita", @"Granada", @"Hematita", @"iRock", @"Jade", @"Kunzita", @"Lapis Lázuli", @"Moon Stone", @"Nitrino", @"Ônix", @"Pirita", @"Quartzo", @"Rubi", @"Safira", @"Turmalina", @"Unakita"];
-        imgs = @[@"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart", @"heart"];
+        words = [[NSMutableArray alloc] initWithObjects:@"Ametista", @"Berilo", @"Citrino", @"Diamante", @"Esmeralda", @"Fluorita", @"Granada", @"Hematita", @"iRock", @"Jade", @"Kunzita", @"Lapis Lázuli", @"Moon Stone", @"Nitrino", @"Ônix", @"Pirita", @"Quartzo", @"Rubi", @"Safira", @"Turmalina", @"Unakita", nil];
     }
     return self;
 }
@@ -35,7 +34,7 @@ static Model *_instance = nil;
     self = [super init];
     if (self) {
         index = 0;
-        words = @[@"Arcanine", @"Bulbassaur", @"Charmander"];
+        words = [[NSMutableArray alloc] initWithObjects:@"Arcanine", @"Bulbassaur", @"Charmander", nil];
     }
     return self;
 }

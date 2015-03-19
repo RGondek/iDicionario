@@ -10,8 +10,7 @@
 
 @interface Model : NSObject
 
-@property NSArray *words;
-@property NSArray *imgs;
+@property NSMutableArray *words;
 @property int index;
 
 +(Model*) instance;

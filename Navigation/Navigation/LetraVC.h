@@ -10,4 +10,6 @@
 
 @interface LetraVC : UIViewController
 
+-(void)atualizar;
+
 @end

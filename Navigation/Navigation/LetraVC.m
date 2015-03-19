@@ -12,57 +12,71 @@
 @implementation LetraVC{
     Model *md;
     UILabel *lblWord;
+    UITextField *txtWord;
+    
     UIBarButtonItem *btnNext;
     UIBarButtonItem *btnPrev;
+    UIBarButtonItem *btnEdit;
+    UIBarButtonItem *btnDone;
+    
     UIImageView *img;
 }
 
 -(void) viewDidLoad {
     [super viewDidLoad];
-    self.title = @"A";
-    btnNext = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self action:@selector(next:)];
-    self.navigationItem.rightBarButtonItem=btnNext;
-    btnPrev = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(prev:)];
-    self.navigationItem.leftBarButtonItem=btnPrev;
     
-    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 75, self.view.bounds.size.width, 50)];
+    // Singleton
     md = [Model instance];
     
-    UIBarButtonItem *btnEdit = [[UIBarButtonItem alloc] initWithTitle:@"Editar" style:UIBarButtonSystemItemEdit target:self action:@selector(editar:)];
+    // Navigation
+    btnNext = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self action:@selector(next:)];
+    btnPrev = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(prev:)];
+    self.navigationItem.rightBarButtonItem=btnNext;
+    self.navigationItem.leftBarButtonItem=btnPrev;
     
+    // -------- View
+    // ToolBar
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 65, self.view.bounds.size.width, 44)];
     
-    NSArray *tools = [[NSArray alloc] initWithObjects:btnEdit, nil];
+    [toolBar setBarStyle:UIBarStyleBlackTranslucent];
     
-    [toolBar setItems:tools animated:YES];
+    btnEdit = [[UIBarButtonItem alloc] initWithTitle:@"Editar" style:UIBarButtonItemStylePlain target:self action:@selector(editar:)];
+    btnDone = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(salvar:)];
+    btnDone.enabled = NO;
+    [btnEdit setTintColor:[UIColor whiteColor]];
+    [btnDone setTintColor:[UIColor whiteColor]];
     
-//    UIButton *botao = [UIButton buttonWithType:UIButtonTypeSystem];
-//    [botao setTitle:@"Texto menor" forState:UIControlStateNormal];
-//    [botao sizeToFit];
-//    botao.center = self.view.center;
-//    btnNext = [UIButton buttonWithType:UIButtonTypeContactAdd];
-//    btnNext.center = self.view.center;
-//    [self.view addSubview:botao];
-//    [self.view addSubview:btnNext];
+    NSArray *tools = [[NSArray alloc] initWithObjects:btnEdit, btnDone, nil];
     
+    [toolBar setItems:tools];
+    
+    // Imagem
     img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, (self.view.bounds.size.width / 1.15), 250)];
     img.center = self.view.center;
     
-    lblWord = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.view.center.y + 150), self.view.bounds.size.width, 50)];
+    // TextField
+    txtWord = [[UITextField alloc] initWithFrame:CGRectMake(20, 150, self.view.bounds.size.width - 40, 50)];
+    txtWord.backgroundColor = [UIColor whiteColor];
+    txtWord.alpha = 0;
+    txtWord.placeholder = @"Digite aqui a nova palavra";
+    
+    
+    // Label
+    lblWord = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.view.center.y + 125), self.view.bounds.size.width, 100)];
     [lblWord setTintColor:[UIColor blackColor]];
     [lblWord setTextAlignment:NSTextAlignmentCenter];
     [lblWord setFont:[UIFont fontWithName:@"Avenir" size:60]];
     
     [self.view addSubview:toolBar];
     [self.view addSubview:lblWord];
+    [self.view addSubview:txtWord];
     [self.view addSubview:img];
     [self.view setBackgroundColor:[UIColor colorWithRed:0.3 green:1 blue:0.6 alpha:1]];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     img.transform = CGAffineTransformMakeScale(0.2, 0.2);
-    self.navigationItem.title = [NSString stringWithFormat:@"%c",[[md.words objectAtIndex:md.index] characterAtIndex:0]];
-    [lblWord setText:[md.words objectAtIndex:md.index]];
-    [img setImage:[UIImage imageNamed:[md.words objectAtIndex:md.index]]];
+    [self atualizar];
     btnNext.enabled = NO;
     btnPrev.enabled = NO;
     [lblWord setAlpha:0];
@@ -79,6 +93,9 @@
         btnPrev.enabled = YES;
     }];
 }
+
+
+#pragma mark Navigation
 
 -(void)next:(id)sender {
     if (md.index == ([md.words count]-1)) {
@@ -99,6 +116,35 @@
     LetraVC *prevPage = [[LetraVC alloc] initWithNibName:nil bundle:NULL];
     [self.navigationController pushViewController:prevPage animated:NO];
     
+}
+
+#pragma mark Methods
+
+-(void)atualizar{
+    self.navigationItem.title = [NSString stringWithFormat:@"%c",[[md.words objectAtIndex:md.index] characterAtIndex:0]];
+    [lblWord setText:[md.words objectAtIndex:md.index]];
+    [img setImage:[UIImage imageNamed:[md.words objectAtIndex:md.index]]];
+}
+
+-(IBAction)editar:(id)sender{
+    [UIView animateWithDuration:0.75 animations:^{
+        lblWord.alpha = 0;
+        txtWord.alpha = 1;
+    }];
+    [btnEdit setEnabled:NO];
+    [btnDone setEnabled:YES];
+}
+
+-(IBAction)salvar:(id)sender{
+    [txtWord endEditing:YES];
+    [md.words replaceObjectAtIndex:md.index withObject:txtWord.text];
+    [self atualizar];
+    [UIView animateWithDuration:0.75 animations:^{
+        lblWord.alpha = 1;
+        txtWord.alpha = 0;
+    }];
+    [btnEdit setEnabled:YES];
+    [btnDone setEnabled:NO];
 }
 
 @end
