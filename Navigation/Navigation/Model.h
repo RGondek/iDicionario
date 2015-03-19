@@ -11,6 +11,8 @@
 @interface Model : NSObject
 
 @property NSMutableArray *words;
+@property NSMutableArray *letter;
+@property NSMutableArray *img;
 @property int index;
 
 +(Model*) instance;

@@ -20,7 +20,6 @@
 		27156F7018B76AF50053A99C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27156F6E18B76AF50053A99C /* InfoPlist.strings */; };
 		27156F7218B76AF50053A99C /* NavigationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 27156F7118B76AF50053A99C /* NavigationTests.m */; };
 		27156F7D18BA89430053A99C /* LetraVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27156F7C18BA89430053A99C /* LetraVC.m */; };
-		D53F8AED1AB990AE0077FE0E /* DictionaryTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = D53F8AEC1AB990AE0077FE0E /* DictionaryTBC.m */; };
 		D58FEF1C1AB7596E00A148D3 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = D58FEF1B1AB7596E00A148D3 /* Model.m */; };
 		D5BFF5EC1AB9B9F100E67A55 /* LetrasTbVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BFF5EB1AB9B9F100E67A55 /* LetrasTbVC.m */; };
 /* End PBXBuildFile section */
@@ -54,8 +53,6 @@
 		27156F7118B76AF50053A99C /* NavigationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavigationTests.m; sourceTree = "<group>"; };
 		27156F7B18BA89430053A99C /* LetraVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LetraVC.h; sourceTree = "<group>"; };
 		27156F7C18BA89430053A99C /* LetraVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LetraVC.m; sourceTree = "<group>"; };
-		D53F8AEB1AB990AE0077FE0E /* DictionaryTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryTBC.h; sourceTree = "<group>"; };
-		D53F8AEC1AB990AE0077FE0E /* DictionaryTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DictionaryTBC.m; sourceTree = "<group>"; };
 		D58FEF1A1AB7596E00A148D3 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		D58FEF1B1AB7596E00A148D3 /* Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		D5BFF5EA1AB9B9F100E67A55 /* LetrasTbVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LetrasTbVC.h; sourceTree = "<group>"; };
@@ -123,8 +120,6 @@
 				27156F5C18B76AF50053A99C /* MackenzieAppDelegate.m */,
 				27156F7B18BA89430053A99C /* LetraVC.h */,
 				27156F7C18BA89430053A99C /* LetraVC.m */,
-				D53F8AEB1AB990AE0077FE0E /* DictionaryTBC.h */,
-				D53F8AEC1AB990AE0077FE0E /* DictionaryTBC.m */,
 				D5BFF5EA1AB9B9F100E67A55 /* LetrasTbVC.h */,
 				D5BFF5EB1AB9B9F100E67A55 /* LetrasTbVC.m */,
 				D58FEF1A1AB7596E00A148D3 /* Model.h */,
@@ -265,7 +260,6 @@
 				27156F7D18BA89430053A99C /* LetraVC.m in Sources */,
 				27156F5918B76AF50053A99C /* main.m in Sources */,
 				D58FEF1C1AB7596E00A148D3 /* Model.m in Sources */,
-				D53F8AED1AB990AE0077FE0E /* DictionaryTBC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,6 @@
 //
 
 #import "LetrasTbVC.h"
-#import "DictionaryTBC.h"
 #import "Model.h"
 
 @interface LetrasTbVC (){
@@ -23,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 10, self.view.bounds.size.width, self.view.bounds.size.height - 60)];
+    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 15, self.view.bounds.size.width, self.view.bounds.size.height - 60)];
     
     [tableView setDelegate:self];
     [tableView setDataSource:self];
@@ -33,6 +32,10 @@
     // self.clearsSelectionOnViewWillAppear = NO;
     
     [self.view addSubview:tableView];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {

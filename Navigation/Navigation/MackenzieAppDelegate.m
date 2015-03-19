@@ -8,18 +8,27 @@
 
 #import "MackenzieAppDelegate.h"
 #import "LetraVC.h"
-#import "DictionaryTBC.h"
+#import "LetrasTbVC.h"
 
 @implementation MackenzieAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    LetraVC *viewController = [[LetraVC alloc] initWithNibName:nil bundle:nil];
-    DictionaryTBC *dicTBC = [[DictionaryTBC alloc] init];
+    UITabBarController *tabBar = [[UITabBarController alloc] init];
     
-    self.navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    LetraVC *letra = [[LetraVC alloc] init];
+    LetrasTbVC *tbLetras = [[LetrasTbVC alloc] init];
+    
+    UINavigationController *letraNC = [[UINavigationController alloc] initWithRootViewController:letra];
+    NSArray *tabViews = [[NSArray alloc] initWithObjects:letraNC, tbLetras, nil];
+    
+    [tabBar setViewControllers:tabViews];
+    
+    letraNC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Pedras" image:[UIImage imageNamed:@"Stone"] tag:1];
+    tbLetras.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Lista" image:[UIImage imageNamed:@"Lista"] tag:2];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = dicTBC;
+    self.window.rootViewController = tabBar;
 
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

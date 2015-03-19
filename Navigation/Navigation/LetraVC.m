@@ -37,9 +37,13 @@
     self.navigationItem.rightBarButtonItem=btnNext;
     self.navigationItem.leftBarButtonItem=btnPrev;
     
+    // Gesture Recognizer
+    UIPanGestureRecognizer *panTouch = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(imgMove:)];
+    UILongPressGestureRecognizer *longPressTouch = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(imgZoom:)];
+    
     // -------- View
     // ToolBar
-    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 65, self.view.bounds.size.width, 44)];
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 75, self.view.bounds.size.width, 44)];
     
     [toolBar setBarStyle:UIBarStyleBlackTranslucent];
     
@@ -54,22 +58,19 @@
     [toolBar setItems:tools];
     
     // Imagem
-    img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, (self.view.bounds.size.width / 1.15), 250)];
-    img.center = self.view.center;
+    img = [[UIImageView alloc] initWithFrame:CGRectMake(20, self.view.center.y - 75, self.view.bounds.size.width - 40, 250)];
     [img setUserInteractionEnabled:YES];
+    img.layer.cornerRadius = 200;
+    img.layer.masksToBounds = YES;
+    [img addGestureRecognizer:panTouch];
+    [img addGestureRecognizer:longPressTouch];
     
     // TextField
     txtWord = [[UITextField alloc] initWithFrame:CGRectMake(20, 150, self.view.bounds.size.width - 40, 50)];
-    txtWord.backgroundColor = [UIColor whiteColor];
-    txtWord.alpha = 0;
-    txtWord.placeholder = @"Digite aqui a nova palavra";
+    [txtWord setTintColor:[UIColor blackColor]];
+    [txtWord setTextAlignment:NSTextAlignmentCenter];
+    [txtWord setFont:[UIFont fontWithName:@"Avenir" size:50]];
     
-    
-    // Label
-    lblWord = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.view.center.y + 125), self.view.bounds.size.width, 100)];
-    [lblWord setTintColor:[UIColor blackColor]];
-    [lblWord setTextAlignment:NSTextAlignmentCenter];
-    [lblWord setFont:[UIFont fontWithName:@"Avenir" size:60]];
     
     [self.view addSubview:toolBar];
     [self.view addSubview:lblWord];
@@ -83,7 +84,7 @@
     [self atualizar];
     btnNext.enabled = NO;
     btnPrev.enabled = NO;
-    [lblWord setAlpha:0];
+    [txtWord setAlpha:0];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -91,7 +92,7 @@
         img.transform = CGAffineTransformMakeScale(1, 1);
         img.transform = CGAffineTransformMakeRotation(M_PI);
         img.transform = CGAffineTransformMakeRotation(0);
-        [lblWord setAlpha:1];
+        [txtWord setAlpha:1];
     } completion:^(BOOL finished) {
         btnNext.enabled = YES;
         btnPrev.enabled = YES;
@@ -124,16 +125,16 @@
 #pragma mark Methods
 
 -(void)atualizar{
-    self.navigationItem.title = [NSString stringWithFormat:@"%c",[[md.words objectAtIndex:md.index] characterAtIndex:0]];
-    [lblWord setText:[md.words objectAtIndex:md.index]];
-    [img setImage:[UIImage imageNamed:[md.words objectAtIndex:md.index]]];
+    self.navigationItem.title = [md.letter objectAtIndex:md.index];
+    [txtWord setText:[md.words objectAtIndex:md.index]];
+    [img setImage:[UIImage imageNamed:[md.img objectAtIndex:md.index]]];
 }
 
 -(IBAction)editar:(id)sender{
-    [UIView animateWithDuration:0.75 animations:^{
-        lblWord.alpha = 0;
-        txtWord.alpha = 1;
+    [UIView animateWithDuration:0.5 animations:^{
+        [txtWord setTextColor:[UIColor redColor]];
     }];
+    [txtWord becomeFirstResponder];
     [btnEdit setEnabled:NO];
     [btnDone setEnabled:YES];
 }
@@ -143,8 +144,7 @@
     [md.words replaceObjectAtIndex:md.index withObject:txtWord.text];
     [self atualizar];
     [UIView animateWithDuration:0.75 animations:^{
-        lblWord.alpha = 1;
-        txtWord.alpha = 0;
+        [txtWord setTextColor:[UIColor blackColor]];
     }];
     [btnEdit setEnabled:YES];
     [btnDone setEnabled:NO];
@@ -152,20 +152,22 @@
 
 #pragma mark Touch Methods
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    UITouch *touch = [touches anyObject];
-    if ([touch.view isEqual:img]) {
-        firstP = [touch locationInView:[self view]];
-        xd = firstP.x - [[touch view] center].x;
-        yd = firstP.y - [[touch view] center].y;
-    }
+-(void)imgMove:(UIPanGestureRecognizer*)pG{
+    CGPoint p = [pG translationInView:[self view]];
+    pG.view.center = CGPointMake(pG.view.center.x + p.x, pG.view.center.y + p.y);
+    [pG setTranslation:CGPointMake(0, 0) inView:[self view]];
 }
 
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    UITouch *touch = [touches anyObject];
-    if ([touch.view isEqual:img]) {
-        CGPoint p = [touch locationInView:[self view]];
-        [[touch view] setCenter:CGPointMake(p.x - xd, p.y - yd)];
+-(void)imgZoom:(UILongPressGestureRecognizer*)pG{
+    if (pG.state == UIGestureRecognizerStateBegan) {
+        [UIView animateWithDuration:0.25 animations:^{
+            img.transform = CGAffineTransformMakeScale(1.5, 1.5);
+        }];
+    }
+    else if (pG.state == UIGestureRecognizerStateEnded){
+        [UIView animateWithDuration:0.25 animations:^{
+            img.transform = CGAffineTransformMakeScale(1, 1);
+        }];
     }
 }
 
