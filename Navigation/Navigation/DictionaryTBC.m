@@ -22,13 +22,12 @@
     LetraVC *letra = [[LetraVC alloc] init];
     LetrasTbVC *tbLetras = [[LetrasTbVC alloc] init];
     UINavigationController *letraNC = [[UINavigationController alloc] initWithRootViewController:letra];
-    
     NSArray *tabViews = [[NSArray alloc] initWithObjects:letraNC, tbLetras, nil];
     
     [self setViewControllers:tabViews];
     
-    letra.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Lista" image:[UIImage imageWithContentsOfFile:@"item1"] tag:1];
-    tbLetras.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Letras" image:[UIImage imageWithContentsOfFile:@"item2"] tag:2];
+    letraNC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Pedras" image:[UIImage imageNamed:@"Stone"] tag:1];
+    tbLetras.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Lista" image:[UIImage imageNamed:@"Lista"] tag:2];
     // Do any additional setup after loading the view.
 }
 

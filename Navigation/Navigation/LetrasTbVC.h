@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LetrasTbVC : UITableViewController
+@interface LetrasTbVC : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @end
