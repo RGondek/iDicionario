@@ -20,6 +20,9 @@
     UIBarButtonItem *btnDone;
     
     UIImageView *img;
+    
+    CGPoint firstP;
+    float xd, yd;
 }
 
 -(void) viewDidLoad {
@@ -53,6 +56,7 @@
     // Imagem
     img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, (self.view.bounds.size.width / 1.15), 250)];
     img.center = self.view.center;
+    [img setUserInteractionEnabled:YES];
     
     // TextField
     txtWord = [[UITextField alloc] initWithFrame:CGRectMake(20, 150, self.view.bounds.size.width - 40, 50)];
@@ -93,7 +97,6 @@
         btnPrev.enabled = YES;
     }];
 }
-
 
 #pragma mark Navigation
 
@@ -145,6 +148,25 @@
     }];
     [btnEdit setEnabled:YES];
     [btnDone setEnabled:NO];
+}
+
+#pragma mark Touch Methods
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    UITouch *touch = [touches anyObject];
+    if ([touch.view isEqual:img]) {
+        firstP = [touch locationInView:[self view]];
+        xd = firstP.x - [[touch view] center].x;
+        yd = firstP.y - [[touch view] center].y;
+    }
+}
+
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    UITouch *touch = [touches anyObject];
+    if ([touch.view isEqual:img]) {
+        CGPoint p = [touch locationInView:[self view]];
+        [[touch view] setCenter:CGPointMake(p.x - xd, p.y - yd)];
+    }
 }
 
 @end
