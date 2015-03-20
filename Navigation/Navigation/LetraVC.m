@@ -45,6 +45,7 @@
     // Gesture Recognizer
     UIPanGestureRecognizer *panTouch = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(imgMove:)];
     UILongPressGestureRecognizer *longPressTouch = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(imgZoom:)];
+    UIPinchGestureRecognizer *pinchTouch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(imgPinch:)];
     
     // -------- View
     // ToolBar
@@ -69,6 +70,7 @@
     img.layer.masksToBounds = YES;
     [img addGestureRecognizer:panTouch];
     [img addGestureRecognizer:longPressTouch];
+    [img addGestureRecognizer:pinchTouch];
     
     // TextField
     txtWord = [[UITextField alloc] initWithFrame:CGRectMake(20, 150, self.view.bounds.size.width - 40, 50)];
@@ -163,6 +165,10 @@
     CGPoint p = [pG translationInView:[self view]];
     pG.view.center = CGPointMake(pG.view.center.x + p.x, pG.view.center.y + p.y);
     [pG setTranslation:CGPointMake(0, 0) inView:[self view]];
+}
+
+-(void)imgPinch:(UIPinchGestureRecognizer*)pG{
+    img.transform = CGAffineTransformMakeScale([pG scale], [pG scale]);
 }
 
 -(void)imgZoom:(UILongPressGestureRecognizer*)pG{
