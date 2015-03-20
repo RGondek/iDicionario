@@ -10,7 +10,7 @@
 
 @implementation Model
 
-@synthesize words, index, letter, img;
+@synthesize words, index, letter, img, pseudoBD;
 
 static Model *_instance = nil;
 
@@ -21,31 +21,61 @@ static Model *_instance = nil;
     return _instance;
 }
 
--(id)init{
+-(instancetype)init{
     self = [super init];
     if (self) {
+        pseudoBD = [RLMRealm defaultRealm];
         index = 0;
-        words = [[NSMutableArray alloc] initWithObjects:@"Ametista", @"Berilo", @"Citrino", @"Diamante", @"Esmeralda", @"Fluorita", @"Granada", @"Hematita", @"iRock", @"Jade", @"Kunzita", @"Lapis Lázuli", @"Moon Stone", @"Nitrino", @"Ônix", @"Pirita", @"Quartzo", @"Rubi", @"Safira", @"Turmalina", @"Unakita", nil];
-        letter = [[NSMutableArray alloc] initWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", nil];
-        img = [[NSMutableArray alloc] initWithObjects:@"Ametista", @"Berilo", @"Citrino", @"Diamante", @"Esmeralda", @"Fluorita", @"Granada", @"Hematita", @"iRock", @"Jade", @"Kunzita", @"Lapis Lázuli", @"Moon Stone", @"Nitrino", @"Ônix", @"Pirita", @"Quartzo", @"Rubi", @"Safira", @"Turmalina", @"Unakita", nil];
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        if ([user valueForKey:@"first"] == nil) {
+            [self burnData];
+            [user setValue:@"SECOND" forKey:@"first"];
+        }
     }
     return self;
 }
 
--(id)initPokemon{
-    self = [super init];
-    if (self) {
-        index = 0;
-        words = [[NSMutableArray alloc] initWithObjects:@"Arcanine", @"Bulbasaur", @"Charmander", nil];
+-(void) burnData{
+    words = [[NSMutableArray alloc] initWithObjects:@"AC/DC", @"Black Sabbath", @"Creed", @"DragonForce", @"Eric Clapton", @"Foo Fighters", @"Gorillaz", @"HammerFall", @"Iron Maiden", @"Judas Priest", @"Korn", @"Linkin Park", @"Metallica", @"NightWish", @"Oasis", @"Pearl Jam", @"Queen", @"R.E.M", @"System of a Down", @"Tenacious D", @"U2", @"Van Hallen", @"Weezer", @"Xuxa", @"Yeah Yeah Yeahs", @"ZZ Top", nil];
+    letter = [[NSMutableArray alloc] initWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
+    img = [[NSMutableArray alloc] initWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
+    for (int i=0; i < letter.count; i++) {
+        Letra *l = [[Letra alloc] init];
+        l.word = [words objectAtIndex:i];
+        l.img = [img objectAtIndex:i];
+        l.letter = [letter objectAtIndex:i];
+        l.index = i;
+        [pseudoBD beginWriteTransaction];
+        [pseudoBD addObject:l];
+        [pseudoBD commitWriteTransaction];
     }
-    return self;
 }
 
-+(Model*) pokemon{
-    if (_instance == nil) {
-        _instance = [[Model alloc] initPokemon];
+-(NSArray*) getAllObjs{
+    RLMResults *res = [Letra allObjects];
+    NSMutableArray *mutVet = [[NSMutableArray alloc] init];
+    for (Letra *l in res) {
+        [mutVet addObject:l];
     }
-    return _instance;
+    return mutVet;
+}
+
+-(Letra*) getObjAtIndex:(int)i{
+    RLMResults *res = [Letra objectsWhere:[NSString stringWithFormat:@"index=%d", i]];
+    for (Letra *l in res) {
+        if (l.index == i) {
+            return l;
+        }
+    }
+    return nil;
+}
+
+-(void) saveObjWord:(NSString*)w atIndex:(int)i{
+    Letra *l = [self getObjAtIndex:i];
+    [pseudoBD beginWriteTransaction];
+    l.word = w;
+//    l.img = lt.img;
+    [pseudoBD commitWriteTransaction];
 }
 
 @end

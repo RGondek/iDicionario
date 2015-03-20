@@ -8,9 +8,12 @@
 
 #import "LetrasTbVC.h"
 #import "Model.h"
+#import "Letra.h"
 
 @interface LetrasTbVC (){
     Model *md;
+    Letra *lt;
+    NSArray *letras;
 }
 
 @end
@@ -22,12 +25,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 15, self.view.bounds.size.width, self.view.bounds.size.height - 60)];
+    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 25, self.view.bounds.size.width, self.view.bounds.size.height - 60)];
     
     [tableView setDelegate:self];
     [tableView setDataSource:self];
     
     md = [Model instance];
+    
+    letras = [[NSArray alloc] initWithArray:[md getAllObjs]];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -52,15 +58,16 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [md.words count];
+    return letras.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"LetraCell"];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LetraCell"];
     
-    [cell.textLabel setText:[NSString stringWithFormat:@"%c",[[md.words objectAtIndex:indexPath.row] characterAtIndex:0]]];
-    [cell.detailTextLabel setText:[md.words objectAtIndex:indexPath.row]];
-    [cell.imageView setImage:[UIImage imageNamed:[md.words objectAtIndex:indexPath.row]]];
+    lt = [letras objectAtIndex:indexPath.row];
+    
+    [cell.textLabel setText:lt.word];
+    [cell.imageView setImage:[UIImage imageNamed:lt.img]];
     
     // Configure the cell...
     

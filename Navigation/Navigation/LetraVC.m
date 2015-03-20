@@ -8,9 +8,11 @@
 
 #import "LetraVC.h"
 #import "Model.h"
+#import "Letra.h"
 
 @implementation LetraVC{
     Model *md;
+    Letra *lt;
     UILabel *lblWord;
     UITextField *txtWord;
     
@@ -21,6 +23,8 @@
     
     UIImageView *img;
     
+    NSArray *letras;
+    
     CGPoint firstP;
     float xd, yd;
 }
@@ -30,6 +34,7 @@
     
     // Singleton
     md = [Model instance];
+    letras = [[NSArray alloc] initWithArray:[md getAllObjs]];
     
     // Navigation
     btnNext = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self action:@selector(next:)];
@@ -60,7 +65,7 @@
     // Imagem
     img = [[UIImageView alloc] initWithFrame:CGRectMake(20, self.view.center.y - 75, self.view.bounds.size.width - 40, 250)];
     [img setUserInteractionEnabled:YES];
-    img.layer.cornerRadius = 200;
+    img.layer.cornerRadius = 100;
     img.layer.masksToBounds = YES;
     [img addGestureRecognizer:panTouch];
     [img addGestureRecognizer:longPressTouch];
@@ -69,7 +74,7 @@
     txtWord = [[UITextField alloc] initWithFrame:CGRectMake(20, 150, self.view.bounds.size.width - 40, 50)];
     [txtWord setTintColor:[UIColor blackColor]];
     [txtWord setTextAlignment:NSTextAlignmentCenter];
-    [txtWord setFont:[UIFont fontWithName:@"Avenir" size:50]];
+    [txtWord setFont:[UIFont fontWithName:@"Avenir" size:25]];
     
     
     [self.view addSubview:toolBar];
@@ -102,7 +107,7 @@
 #pragma mark Navigation
 
 -(void)next:(id)sender {
-    if (md.index == ([md.words count]-1)) {
+    if (md.index == ([letras count]-1)) {
         md.index = 0;
     }
     else { md.index++; }
@@ -113,7 +118,7 @@
 
 -(void)prev:(id)sender {
     if (md.index == 0) {
-        md.index = (int)([md.words count]-1);
+        md.index = (int)([letras count]-1);
     }
     else{ md.index--; }
     
@@ -125,9 +130,11 @@
 #pragma mark Methods
 
 -(void)atualizar{
-    self.navigationItem.title = [md.letter objectAtIndex:md.index];
-    [txtWord setText:[md.words objectAtIndex:md.index]];
-    [img setImage:[UIImage imageNamed:[md.img objectAtIndex:md.index]]];
+    letras = [md getAllObjs];
+    lt = [letras objectAtIndex:md.index];
+    self.navigationItem.title = lt.letter;
+    [txtWord setText:lt.word];
+    [img setImage:[UIImage imageNamed:lt.img]];
 }
 
 -(IBAction)editar:(id)sender{
@@ -141,7 +148,7 @@
 
 -(IBAction)salvar:(id)sender{
     [txtWord endEditing:YES];
-    [md.words replaceObjectAtIndex:md.index withObject:txtWord.text];
+    [md saveObjWord:txtWord.text atIndex:md.index];
     [self atualizar];
     [UIView animateWithDuration:0.75 animations:^{
         [txtWord setTextColor:[UIColor blackColor]];
