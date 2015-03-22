@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 25, self.view.bounds.size.width, self.view.bounds.size.height - 60)];
+    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 25, self.view.bounds.size.width, self.view.bounds.size.height - 75)];
     
     [tableView setDelegate:self];
     [tableView setDataSource:self];
@@ -68,6 +68,8 @@
     
     [cell.textLabel setText:lt.word];
     [cell.detailTextLabel setText:lt.date];
+    cell.imageView.layer.cornerRadius = 10;
+    cell.imageView.layer.masksToBounds = YES;
     [cell.imageView setImage:[UIImage imageNamed:lt.img]];
     
     // Configure the cell...
@@ -77,7 +79,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     md.index = (int)indexPath.row;
-    [[super tabBarController] setSelectedIndex:0];
+    [[super tabBarController] setSelectedIndex:1];
 }
 
 /*

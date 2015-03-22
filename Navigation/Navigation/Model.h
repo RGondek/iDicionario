@@ -23,7 +23,6 @@
 -(void) saveObjWord:(NSString*)w andDate:(NSString*)d atIndex:(int)i;
 -(void) saveObjImage:(NSString*)img atIndex:(int)i;
 
-
 +(Model*) instance;
 -(NSArray*) getAllObjs;
 

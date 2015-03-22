@@ -7,18 +7,67 @@
 //
 
 #import "MainVC.h"
+#import "Model.h"
+#import "Letra.h"
 
 @interface MainVC ()
 
 @end
 
-@implementation MainVC
+@implementation MainVC{
+    Model *md;
+    NSArray *objs;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    md = [Model instance];
+    objs = [[NSArray alloc] initWithArray:[md getAllObjs]];
+
+    // Search Bar
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 25, self.view.bounds.size.width, 70)];
+    [searchBar setDelegate:self];
+    [searchBar setBarTintColor:[UIColor redColor]];
+    [searchBar setPrompt:@"Buscar"];
+    [searchBar setPlaceholder:@"Digite a palavra"];
+    
+    [self.view addSubview:searchBar];
     
     // Do any additional setup after loading the view.
+}
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    [searchBar endEditing:YES];
+    int busca = [self searchObj:searchBar.text];
+    if (busca == -1){
+        [UIView animateWithDuration:0.075 animations:^{
+            searchBar.transform = CGAffineTransformMakeTranslation(15, 0);
+        }completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.075 animations:^{
+                searchBar.transform = CGAffineTransformMakeTranslation(-15, 0);
+            } completion:^(BOOL finished) {
+                [UIView animateWithDuration:0.075 animations:^{
+                    searchBar.transform = CGAffineTransformMakeTranslation(5, 0);
+                }completion:^(BOOL finished) {
+                    searchBar.transform = CGAffineTransformMakeTranslation(0, 0);
+                }];
+            }];
+        }];
+    }
+    else{
+        md.index = busca;
+        [self.tabBarController setSelectedIndex:1];
+    }
+}
+
+-(int) searchObj:(NSString*)o{
+    for (Letra *l in objs) {
+        if ([l.word isEqualToString:o]) {
+            return l.index;
+        }
+    }
+    return -1;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -26,14 +75,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

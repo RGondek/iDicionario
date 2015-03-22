@@ -9,6 +9,7 @@
 #import "MackenzieAppDelegate.h"
 #import "LetraVC.h"
 #import "LetrasTbVC.h"
+#import "MainVC.h"
 
 @implementation MackenzieAppDelegate
 
@@ -18,13 +19,15 @@
     
     LetraVC *letra = [[LetraVC alloc] init];
     LetrasTbVC *tbLetras = [[LetrasTbVC alloc] init];
+    MainVC *main = [[MainVC alloc] init];
     
     UINavigationController *letraNC = [[UINavigationController alloc] initWithRootViewController:letra];
-    NSArray *tabViews = [[NSArray alloc] initWithObjects:letraNC, tbLetras, nil];
+    NSArray *tabViews = [[NSArray alloc] initWithObjects: main, letraNC, tbLetras, nil];
     
     [tabBar setViewControllers:tabViews];
     
-    letraNC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Pedras" image:[UIImage imageNamed:@"Stone"] tag:1];
+    main.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:0];
+    letraNC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Bandas" image:[UIImage imageNamed:@"Stone"] tag:1];
     tbLetras.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Lista" image:[UIImage imageNamed:@"Lista"] tag:2];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
