@@ -44,6 +44,7 @@ static Model *_instance = nil;
         l.word = [words objectAtIndex:i];
         l.img = [imgs objectAtIndex:i];
         l.letter = [letter objectAtIndex:i];
+        l.date = [NSString stringWithFormat:@"%@", [NSDate date]];
         l.index = i;
         [pseudoBD beginWriteTransaction];
         [pseudoBD addObject:l];
@@ -70,10 +71,11 @@ static Model *_instance = nil;
     return nil;
 }
 
--(void) saveObjWord:(NSString*)w atIndex:(int)i{
+-(void) saveObjWord:(NSString*)w andDate:(NSString*)d atIndex:(int)i{
     Letra *l = [self getObjAtIndex:i];
     [pseudoBD beginWriteTransaction];
     l.word = w;
+    l.date = d;
     [pseudoBD commitWriteTransaction];
 }
 

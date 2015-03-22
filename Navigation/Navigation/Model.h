@@ -20,7 +20,7 @@
 @property int index;
 
 -(void) burnData;
--(void) saveObjWord:(NSString*)w atIndex:(int)i;
+-(void) saveObjWord:(NSString*)w andDate:(NSString*)d atIndex:(int)i;
 -(void) saveObjImage:(NSString*)img atIndex:(int)i;
 
 

@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSString *word;
 @property (nonatomic, strong) NSString *img;
 @property (nonatomic, strong) NSString *letter;
+@property (nonatomic, strong) NSString *date;
 @property int index;
 
 @end

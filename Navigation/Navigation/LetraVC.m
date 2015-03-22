@@ -22,6 +22,8 @@
     UIBarButtonItem *space;
     UIBarButtonItem *btnImgCam;
     
+    UIDatePicker *dtPicker;
+    
     UIImageView *img;
     
     NSArray *letras;
@@ -70,6 +72,13 @@
     
     [toolBar setItems:tools];
     
+    // Date Picker
+    dtPicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 150, self.view.bounds.size.width, 50)];
+    [dtPicker setCalendar:[NSCalendar currentCalendar]];
+    [dtPicker setDatePickerMode:UIDatePickerModeDate];
+    [dtPicker setAlpha:0];
+    [dtPicker setTintColor:[UIColor whiteColor]];
+    
     // Imagem
     img = [[UIImageView alloc] initWithFrame:CGRectMake(20, self.view.center.y - 75, self.view.bounds.size.width - 40, 250)];
     img.layer.cornerRadius = 100;
@@ -84,8 +93,10 @@
     [txtWord setTintColor:[UIColor blackColor]];
     [txtWord setTextAlignment:NSTextAlignmentCenter];
     [txtWord setFont:[UIFont fontWithName:@"Avenir" size:25]];
+    [txtWord setUserInteractionEnabled:NO];
     
     
+    [self.view addSubview:dtPicker];
     [self.view addSubview:toolBar];
     [self.view addSubview:lblWord];
     [self.view addSubview:txtWord];
@@ -154,22 +165,47 @@
     if ([btnEdit.title isEqualToString:@"Editar"]) {
         [UIView animateWithDuration:0.5 animations:^{
             [txtWord setTextColor:[UIColor redColor]];
+            txtWord.transform = CGAffineTransformMakeTranslation(0, -25);
+            img.transform = CGAffineTransformMakeTranslation(0, 150);
+            [dtPicker setAlpha:1];
         }];
+        [txtWord setUserInteractionEnabled:YES];
         [txtWord becomeFirstResponder];
-        [btnEdit setTitle:@"Concluir"];
+        [btnEdit setTitle:@"Salvar"];
         [btnImgCam setEnabled:YES];
     }
-    else if ([btnEdit.title isEqualToString:@"Concluir"]){
+    else if ([btnEdit.title isEqualToString:@"Salvar"]){
         [txtWord endEditing:YES];
-        [md saveObjWord:txtWord.text atIndex:md.index];
+        [txtWord setUserInteractionEnabled:NO];
+        [md saveObjWord:txtWord.text andDate:[NSString stringWithFormat:@"%@", dtPicker.date] atIndex:md.index];
         [self atualizar];
         [UIView animateWithDuration:0.75 animations:^{
             [txtWord setTextColor:[UIColor blackColor]];
+            txtWord.transform = CGAffineTransformMakeTranslation(0, 0);
+            img.transform = CGAffineTransformMakeTranslation(0, 0);
+
+            [dtPicker setAlpha:0];
         }];
         [btnEdit setTitle:@"Editar"];
         [btnImgCam setEnabled:NO];
     }
 }
+
+-(IBAction)editarImg:(id)sender{
+    [txtWord endEditing:YES];
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    else{
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary   ;
+    }
+    [self presentViewController:picker animated:YES completion:NULL];
+}
+
+#pragma mark ImagePicker Methods
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
@@ -189,25 +225,12 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
--(IBAction)editarImg:(id)sender{
-    [txtWord endEditing:YES];
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.allowsEditing = YES;
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    }
-    else{
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary   ;
-    }
-    [self presentViewController:picker animated:YES completion:NULL];
-}
-
--(IBAction)salvarImg:(id)sender{
-    NSLog(@"Salvo");
-}
 
 #pragma mark Touch Methods
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [txtWord resignFirstResponder];
+}
 
 -(void)imgMove:(UIPanGestureRecognizer*)pG{
     CGPoint p = [pG translationInView:[self view]];

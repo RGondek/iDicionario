@@ -62,11 +62,12 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LetraCell"];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"LetraCell"];
     
     lt = [letras objectAtIndex:indexPath.row];
     
     [cell.textLabel setText:lt.word];
+    [cell.detailTextLabel setText:lt.date];
     [cell.imageView setImage:[UIImage imageNamed:lt.img]];
     
     // Configure the cell...
