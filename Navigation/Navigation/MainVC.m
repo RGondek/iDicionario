@@ -39,7 +39,8 @@
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     [searchBar endEditing:YES];
-    int busca = [self searchObj:searchBar.text];
+    NSString *text = searchBar.text;
+    int busca = [self searchObj:text];
     if (busca == -1){
         [UIView animateWithDuration:0.075 animations:^{
             searchBar.transform = CGAffineTransformMakeTranslation(15, 0);
@@ -54,6 +55,8 @@
                 }];
             }];
         }];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Erro" message:[NSString stringWithFormat:@"A palavra %@ não foi encontrada no dicionário!", text] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
     }
     else{
         md.index = busca;
@@ -63,7 +66,7 @@
 
 -(int) searchObj:(NSString*)o{
     for (Letra *l in objs) {
-        if ([l.word isEqualToString:o]) {
+        if ([[l.word lowercaseString] isEqualToString:[o lowercaseString]]) {
             return l.index;
         }
     }
