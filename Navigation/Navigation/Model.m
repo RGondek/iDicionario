@@ -10,7 +10,7 @@
 
 @implementation Model
 
-@synthesize words, index, letter, img, pseudoBD;
+@synthesize words, index, letter, imgs, pseudoBD;
 
 static Model *_instance = nil;
 
@@ -38,11 +38,11 @@ static Model *_instance = nil;
 -(void) burnData{
     words = [[NSMutableArray alloc] initWithObjects:@"AC/DC", @"Black Sabbath", @"Creed", @"DragonForce", @"Eric Clapton", @"Foo Fighters", @"Gorillaz", @"HammerFall", @"Iron Maiden", @"Judas Priest", @"Korn", @"Linkin Park", @"Metallica", @"NightWish", @"Oasis", @"Pearl Jam", @"Queen", @"R.E.M", @"System of a Down", @"Tenacious D", @"U2", @"Van Hallen", @"Weezer", @"Xuxa", @"Yeah Yeah Yeahs", @"ZZ Top", nil];
     letter = [[NSMutableArray alloc] initWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
-    img = [[NSMutableArray alloc] initWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
+    imgs = [[NSMutableArray alloc] initWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
     for (int i=0; i < letter.count; i++) {
         Letra *l = [[Letra alloc] init];
         l.word = [words objectAtIndex:i];
-        l.img = [img objectAtIndex:i];
+        l.img = [imgs objectAtIndex:i];
         l.letter = [letter objectAtIndex:i];
         l.index = i;
         [pseudoBD beginWriteTransaction];
@@ -74,7 +74,13 @@ static Model *_instance = nil;
     Letra *l = [self getObjAtIndex:i];
     [pseudoBD beginWriteTransaction];
     l.word = w;
-//    l.img = lt.img;
+    [pseudoBD commitWriteTransaction];
+}
+
+-(void) saveObjImage:(NSString*)img atIndex:(int)i{
+    Letra *l = [self getObjAtIndex:i];
+    [pseudoBD beginWriteTransaction];
+    l.img = img;
     [pseudoBD commitWriteTransaction];
 }
 

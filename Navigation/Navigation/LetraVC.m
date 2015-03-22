@@ -19,7 +19,8 @@
     UIBarButtonItem *btnNext;
     UIBarButtonItem *btnPrev;
     UIBarButtonItem *btnEdit;
-    UIBarButtonItem *btnDone;
+    UIBarButtonItem *space;
+    UIBarButtonItem *btnImgCam;
     
     UIImageView *img;
     
@@ -48,26 +49,32 @@
     UIPinchGestureRecognizer *pinchTouch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(imgPinch:)];
     
     // -------- View
+    
+    [self.view setBackgroundColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.6 alpha:1]];
+    
     // ToolBar
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 75, self.view.bounds.size.width, 44)];
     
     [toolBar setBarStyle:UIBarStyleBlackTranslucent];
     
-    btnEdit = [[UIBarButtonItem alloc] initWithTitle:@"Editar" style:UIBarButtonItemStylePlain target:self action:@selector(editar:)];
-    btnDone = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(salvar:)];
-    btnDone.enabled = NO;
-    [btnEdit setTintColor:[UIColor whiteColor]];
-    [btnDone setTintColor:[UIColor whiteColor]];
+    space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     
-    NSArray *tools = [[NSArray alloc] initWithObjects:btnEdit, btnDone, nil];
+    btnEdit = [[UIBarButtonItem alloc] initWithTitle:@"Editar" style:UIBarButtonItemStylePlain target:self action:@selector(editar:)];
+    [btnEdit setTintColor:[UIColor whiteColor]];
+
+    btnImgCam = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(editarImg:)];
+    [btnImgCam setTintColor:[UIColor whiteColor]];
+    [btnImgCam setEnabled:NO];
+    
+    NSArray *tools = [[NSArray alloc] initWithObjects:space, space, btnImgCam, space, btnEdit, nil];
     
     [toolBar setItems:tools];
     
     // Imagem
     img = [[UIImageView alloc] initWithFrame:CGRectMake(20, self.view.center.y - 75, self.view.bounds.size.width - 40, 250)];
-    [img setUserInteractionEnabled:YES];
     img.layer.cornerRadius = 100;
     img.layer.masksToBounds = YES;
+    [img setUserInteractionEnabled:YES];
     [img addGestureRecognizer:panTouch];
     [img addGestureRecognizer:longPressTouch];
     [img addGestureRecognizer:pinchTouch];
@@ -83,7 +90,6 @@
     [self.view addSubview:lblWord];
     [self.view addSubview:txtWord];
     [self.view addSubview:img];
-    [self.view setBackgroundColor:[UIColor colorWithRed:0.3 green:1 blue:0.6 alpha:1]];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -115,7 +121,7 @@
     else { md.index++; }
     
     LetraVC *nextPage = [[LetraVC alloc]init];
-    [self.navigationController pushViewController:nextPage animated:YES];
+    [self.navigationController pushViewController:nextPage animated:NO];
 }
 
 -(void)prev:(id)sender {
@@ -136,27 +142,69 @@
     lt = [letras objectAtIndex:md.index];
     self.navigationItem.title = lt.letter;
     [txtWord setText:lt.word];
-    [img setImage:[UIImage imageNamed:lt.img]];
+    if(lt.img.length <= 1){
+        [img setImage:[UIImage imageNamed:lt.img]];
+    }
+    else{
+        [img setImage:[UIImage imageWithContentsOfFile:lt.img]];
+    }
 }
 
 -(IBAction)editar:(id)sender{
-    [UIView animateWithDuration:0.5 animations:^{
-        [txtWord setTextColor:[UIColor redColor]];
-    }];
-    [txtWord becomeFirstResponder];
-    [btnEdit setEnabled:NO];
-    [btnDone setEnabled:YES];
+    if ([btnEdit.title isEqualToString:@"Editar"]) {
+        [UIView animateWithDuration:0.5 animations:^{
+            [txtWord setTextColor:[UIColor redColor]];
+        }];
+        [txtWord becomeFirstResponder];
+        [btnEdit setTitle:@"Concluir"];
+        [btnImgCam setEnabled:YES];
+    }
+    else if ([btnEdit.title isEqualToString:@"Concluir"]){
+        [txtWord endEditing:YES];
+        [md saveObjWord:txtWord.text atIndex:md.index];
+        [self atualizar];
+        [UIView animateWithDuration:0.75 animations:^{
+            [txtWord setTextColor:[UIColor blackColor]];
+        }];
+        [btnEdit setTitle:@"Editar"];
+        [btnImgCam setEnabled:NO];
+    }
 }
 
--(IBAction)salvar:(id)sender{
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    
+    NSArray *local = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [local objectAtIndex:0];
+    NSString *imagePath = [documentsDirectory stringByAppendingPathComponent:@"latest_photo.png"];
+    
+    NSData *webData = UIImagePNGRepresentation(chosenImage);
+    [webData writeToFile:imagePath atomically:YES];
+    
+    [md saveObjImage:imagePath atIndex:md.index];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(IBAction)editarImg:(id)sender{
     [txtWord endEditing:YES];
-    [md saveObjWord:txtWord.text atIndex:md.index];
-    [self atualizar];
-    [UIView animateWithDuration:0.75 animations:^{
-        [txtWord setTextColor:[UIColor blackColor]];
-    }];
-    [btnEdit setEnabled:YES];
-    [btnDone setEnabled:NO];
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    else{
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary   ;
+    }
+    [self presentViewController:picker animated:YES completion:NULL];
+}
+
+-(IBAction)salvarImg:(id)sender{
+    NSLog(@"Salvo");
 }
 
 #pragma mark Touch Methods

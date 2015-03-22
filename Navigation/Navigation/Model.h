@@ -16,11 +16,13 @@
 
 @property NSMutableArray *words;
 @property NSMutableArray *letter;
-@property NSMutableArray *img;
+@property NSMutableArray *imgs;
 @property int index;
 
 -(void) burnData;
 -(void) saveObjWord:(NSString*)w atIndex:(int)i;
+-(void) saveObjImage:(NSString*)img atIndex:(int)i;
+
 
 +(Model*) instance;
 -(NSArray*) getAllObjs;

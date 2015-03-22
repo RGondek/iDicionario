@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LetraVC : UIViewController
-
--(void)atualizar;
+@interface LetraVC : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end
